@@ -80,7 +80,7 @@
 		  <a class="navbar-brand"><span class="addPad">Drinkr</span><i class="fas fa-wine-glass-alt"></i><i class="fas fa-glass-martini"></i> <i class="fas fa-beer"></i></a>
 		 
 		</nav>
-		<div style="background-color:#212121" class="wrapper h-100 w-100">
+		<div style="background-color:#212121" id="colorChange" class="wrapper h-100 w-100">
 
 			<div class="container h-100 d-flex">
 			   
@@ -151,8 +151,40 @@
 			   
 			   <div class="jumbotron mx-auto my-auto">
 				
-					<h3 class="text-white dat-font" id="cards">Hey, How Ya'll doing? I'm sure you know how this works. If you don't start by tapping the screen. You'll probably be able to pick it up from there. If you can't drinking games are probably the least of your worries. Enjoy!</h3>
+					<h3 class="text-white dat-font" id="cards">Hey, How Ya'll doing? I'm sure you know how this works. If you don't start by tapping the screen. You'll probably be able to pick it up from there. If you can't... drinking games are probably the least of your worries. Enjoy!</h3>
 				
+				</div>
+			
+			</div>
+			
+		</div>
+		
+	</div>
+	
+	<div class="app-page" data-page="end">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		  <a class="navbar-brand" href="#"><span class="addPad">Drinkr</span><i class="fas fa-wine-glass-alt"></i><i class="fas fa-glass-martini"></i> <i class="fas fa-beer"></i></a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			  
+			</ul>
+			
+		  </div>
+		</nav>
+		<div id="gameBoard" style="background-color:red" class="wrapper h-100 w-100">
+
+			<div class="container h-100 d-flex">
+			   
+			   <div class="jumbotron mx-auto my-auto">
+				
+					<h3 class="text-white dat-font" id="cards">That's All I got folks...hope you had fun!</h3>
+					<form class="form-inline my-2 my-lg-0">
+					   <button id="stopGame" class="btn btn-danger my-2 my-sm-0 col"><i class="fas fa-stop"></i>End Game</button>
+					</form>
 				</div>
 			
 			</div>
@@ -211,7 +243,7 @@
 		
 		if (players == 0) {
 			
-			$("#errorMessage").text("");
+			$("#errorMessage").text("You need players to play");
 			
 		} else {
 			
@@ -243,7 +275,7 @@
 				
 				
 				});
-		    
+		   
 		    function getRandomPlayer() {
 				
 					const random = Math.floor(Math.random() * players.length);
@@ -252,6 +284,7 @@
 						
 				}
 		    
+					
 			var nameBasedCards = [
 			    
 			" if you're wearing something blue drink 3 times. All articles of clothing and jewelry count. If you're wearing nothing blue give out three drinks.",
@@ -262,9 +295,9 @@
 			" give each player a dollar or drink for each player in the room.",
 			" drink for the second digit in your age. Ex: if you're 25 drink five times (also get your life together).",
 			" It's rhyme time. Think of a word then go around the room and rhyme with it. The first person to mess up will have to drink 5 times",
-			" has three bullets. Each bullet is worth three drinks. You can fire them whenever you'd like.",
+			" is the question master. Anyone who answers their questions will have to drink.",
 			
-			]
+			];
 			
 			for(var i=0;i<nameBasedCards.length;i++){
                 nameBasedCards[i]=getRandomPlayer() + nameBasedCards[i];
@@ -275,6 +308,8 @@
 			"Everyone in the room who has an even birthday drink three times.",
 			"If You've Ever been to Chicago drink twice.",
 			"The first person to name five state capitals can pass out 7 drinks.",
+			"If your name begins with a vowel give out three drinks.",
+			"Everyone in the room has three bullets to be fired at anyone, for any reason. The victim shot will have to drink 3 times.",
 			
 			];
 			
@@ -291,13 +326,38 @@
 				}
 				return array;
 			}
-					
+			
 			$("#gameBoard").click(function () {
 				shuffle(newCardArray);
-				$('#cards').html(newCardArray.pop());	
-				if ($("#cards").val(" is chef, you must respond to them with 'yes Chef' or no 'Chef' from now on. Chef feel free to throw some Gordon Ramsey caliber insults into the mix")) {
-				    newCardArray.push("The Chef has been thrown the f%#k out! You don't have to refer to them as Chef anymore. They can still insult you if they feel like it I don't care.")
+				var theCardRightNow = newCardArray.pop();
+				$('#cards').html(theCardRightNow);	
+			    if (theCardRightNow.includes(" is the question master. Anyone who answers their questions will have to drink.")) {
+			    
+			        newCardArray.push("The Question Master has been dethroned. You can answer their questions again. As their last act the question master can either drink 7 times or appoint a new question master who will reign for the reainder of the game.");
+			    
+			    }
+			    if (theCardRightNow.includes(" is chef, you must respond to them with 'yes Chef' or no 'Chef' from now on. Chef feel free to throw some Gordon Ramsey caliber insults into the mix")) {
+			    
+			        newCardArray.push("The Chef has been thrown the f%#k out! You no longer have to address them with Yes or No Chef. Feel free to keep insulting eachother.");
+			    
+			    }
+			    
+			    if (theCardRightNow.includes(" in the room has three bullets to be fired at anyone, for any reason. The victim shot will have to drink 3 times.")) {
+			        
+			        var them = getRandomPlayer();
+			        newCardArray.push(them + "has found two more bullets");
+			        
+			    }
+			    console.log(theCardRightNow);
+				
+				if (theCardRightNow == null) {
+				
+						
+						App.load('end');
+					
+					
 				}
+			
 			});
 		});
 		
